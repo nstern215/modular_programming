@@ -11,7 +11,7 @@
  * data to the output file
  *
  * input:
- * names of 3 file: inputFilename, encryptionKeyFilename, encryptedFileFilename
+ * names of 3 file: encryptionKeyFilename, inputFilename, encryptedFileFilename
  *
  * output:
  * encrypted content in the output file
@@ -51,10 +51,10 @@ int main()
 	char encryptionKeyFileName[FILENAME_LENGTH];
 	char encryptedFileFilename[FILENAME_LENGTH];
 
-	cout << "Enter input filename, encryption key filename, output filename" << endl;
-
-	cin >> setw(FILENAME_LENGTH) >> inputFilename
-		>> setw(FILENAME_LENGTH) >> encryptionKeyFileName
+	cout << "Enter encryption key filename, input filename, output filename" << endl;
+	
+	cin >> setw(FILENAME_LENGTH) >> encryptionKeyFileName
+		>> setw(FILENAME_LENGTH) >> inputFilename
 		>> setw(FILENAME_LENGTH) >> encryptedFileFilename;
 
 	if (!open_files(inputFilename, encryptionKeyFileName, encryptedFileFilename, inputFile, encryptionKeyFile, encryptedFile))
