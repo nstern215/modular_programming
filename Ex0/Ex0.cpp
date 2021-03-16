@@ -35,11 +35,10 @@ using std::ofstream;
 bool open_files(char inputFilename[], char keyFilename[], char outputFilename[], ifstream& inputIsr, ifstream& keyIst, ofstream& outputOstr);
 void close_files(ifstream& inputIsr, ifstream& keyIst, ofstream& outputOstr);
 void encrypt_file(ifstream& inputFile, ifstream& encryptionKeyFile, ofstream& outputFile);
+char encrypt_char(char toEncrypt, ifstream& encryptionKeyFile);
 
 //----------------constant section----------------
 const int FILENAME_LENGTH = 100;
-const int CHAR_ENCRYPT_KEY_SIZE = 3;
-const int LINE_SIZE = 100;
 
 int main()
 {
@@ -136,54 +135,59 @@ void close_files(ifstream& inputIsr, ifstream& keyIst, ofstream& outputOstr)
  * the function reading a single char from the input file. if this character is not an alphanumeric char,
  * its send to the output file and the function continue to the next char in the file.
  *
- * if it is, the function starting to read chars from the encryption key file.
- * for each character in the key, it check if there is another alphanumeric char after (ex. space is possible)
- * if, it check if the char from the input file and the char from the key are equal, and if so, the char from
- * the input replacing by the *next* char from the key
+ * if it is, the function sending the char for encryption
  */
 void encrypt_file(ifstream& inputFile, ifstream& encryptionKeyFile, ofstream& outputFile)
 {
-	//outputChar use to store the output char (original from input or encrypted)
-	char inputChar, outputChar, encryptChar;
-
-	inputChar = inputFile.get();
+	
+	char outputChar;
+	char inputChar = inputFile.get();
 	
 	while(!inputFile.eof())
 	{
-		outputChar = inputChar;
-
-		//if the char is not relevant for the encryption, skip to the next iteration
-		if (!isalpha(outputChar))
-		{
-			outputFile << outputChar;
-
-			inputChar = inputFile.get();
-			
-			continue;
-		}
-		
-		encryptChar = encryptionKeyFile.get();
-		//reading chars from the encryption key and look for a match with the char from the input file
-		while(!encryptionKeyFile.eof())
-		{
-			if (isalpha(encryptionKeyFile.peek()))
-			{
-				if (inputChar == encryptChar)
-				{
-					outputChar = encryptionKeyFile.peek();
-					break;
-				}
-			}
-			
-			encryptChar = encryptionKeyFile.get();
-		}
-
-		//set back the pointer to the beginning of the encryption key file
-		encryptionKeyFile.clear();
-		encryptionKeyFile.seekg(-encryptionKeyFile.tellg(), std::ios::cur);
+		//if the char is not relevant for the encryption, sent for encryption, otherwise, use the original char
+		if (isalpha(inputChar))
+			outputChar = encrypt_char(inputChar, encryptionKeyFile);
+		else
+			outputChar = inputChar;
 
 		outputFile << outputChar;
 		
 		inputChar = inputFile.get();
 	}
+}
+
+/*
+ * this function uses to encrypt one char at a time
+ *
+ * the function starting to read chars from the encryption key file.
+ * for each character in the key, it check if there is another alphanumeric char after (ex. space is possible)
+ * if, it check if the char from the input file and the char from the key are equal, and if so, the char from
+ * the input replacing by the *next* char from the key
+ */
+char encrypt_char(char toEncrypt, ifstream& encryptionKeyFile)
+{
+	char encryptKeyChar = encryptionKeyFile.get();
+	char outputChar = toEncrypt; //outputChar use to store the output char (original from input or encrypted)
+
+	//reading chars from the encryption key and look for a match with the char from the input file
+	while (!encryptionKeyFile.eof())
+	{
+		if (isalpha(encryptionKeyFile.peek()))
+		{
+			if (toEncrypt == encryptKeyChar)
+			{
+				outputChar = encryptionKeyFile.peek();
+				break;
+			}
+		}
+
+		encryptKeyChar = encryptionKeyFile.get();
+	}
+
+	//set back the pointer to the beginning of the encryption key file
+	encryptionKeyFile.clear();
+	encryptionKeyFile.seekg(-encryptionKeyFile.tellg(), std::ios::cur);
+
+	return outputChar;
 }

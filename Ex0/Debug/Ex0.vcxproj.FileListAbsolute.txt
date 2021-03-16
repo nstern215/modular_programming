@@ -1,2 +1,4 @@
 C:\Users\nster\OneDrive\מסמכים\לימודים\שנה א\סמסטר ב\תכנות מודולארי\modular_programming\Ex0\Debug\Ex0.exe
 C:\Users\nster\OneDrive\מסמכים\לימודים\שנה א\סמסטר ב\תכנות מודולארי\modular_programming\Ex0\Debug\Ex0.pdb
+C:\modular_programming\Ex0\Debug\Ex0.exe
+C:\modular_programming\Ex0\Debug\Ex0.pdb
