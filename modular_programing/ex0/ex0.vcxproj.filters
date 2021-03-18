@@ -18,8 +18,5 @@
     <ClCompile Include="ex0a.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ex0b.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
