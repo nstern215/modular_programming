@@ -1,5 +1,5 @@
 /*
- * Ex #0: File dencryption
+ * Ex #0: File decryption
  * =============================================
  * Written by: Netanel Stern, id = 206342255, login = netanelst
  *
