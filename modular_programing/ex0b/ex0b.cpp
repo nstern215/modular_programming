@@ -43,13 +43,16 @@ const int LETTER_AMOUNT_COLUMN = 1;
 const char BASE_LETTER_ID = 'a';
 
 //------------------functions section------------------
-bool open_files(char input_filename[], char encrypted_filename[], ifstream& input_file, ifstream& encrypted_file);
+bool open_files(char input_filename[], char encrypted_filename[], 
+    ifstream& input_file, ifstream& encrypted_file);
 void close_files(ifstream& input_file, ifstream& encrypted_file);
 void decrypt_file(ifstream& encrypted_file, ifstream& input_file);
-void count_chars_in_file(ifstream& ifstr, int chars_sum[LETTERS_AMOUNT][COLUMNS]);
+void count_chars_in_file(ifstream& ifstr, 
+    int chars_sum[LETTERS_AMOUNT][COLUMNS]);
 void initial_chars_sum_array(int arr[LETTERS_AMOUNT][COLUMNS]);
 void order_array_by_char_instances(int arr[LETTERS_AMOUNT][COLUMNS]);
-void analyze_file(ifstream& ifstr, int chars_sum_array[LETTERS_AMOUNT][COLUMNS]);
+void analyze_file(ifstream& ifstr, 
+    int chars_sum_array[LETTERS_AMOUNT][COLUMNS]);
 
 int main()
 {
@@ -64,7 +67,8 @@ int main()
     cin >> setw(FILENAME_LENGtH) >> encrypted_filename
         >> setw(FILENAME_LENGtH) >> input_filename;
 
-	if(!open_files(input_filename, encrypted_filename, input_file, encrypted_file))
+	if(!open_files(input_filename, encrypted_filename, input_file, 
+        encrypted_file))
         return EXIT_FAILURE;
 
     decrypt_file(encrypted_file, input_file);
@@ -89,7 +93,8 @@ int main()
  * If all files has open success - true
  * Otherwise - false
  */
-bool open_files(char input_filename[], char encrypted_filename[], ifstream& input_file, ifstream& encrypted_file)
+bool open_files(char input_filename[], char encrypted_filename[],
+    ifstream& input_file, ifstream& encrypted_file)
 {
     input_file.open(input_filename);
     if(!input_file.is_open())
@@ -148,15 +153,17 @@ void initial_chars_sum_array(int arr[LETTERS_AMOUNT][COLUMNS])
  * chars_sum: the array used to store the summarized chars
  * 
  */
-void count_chars_in_file(ifstream& ifstr, int chars_sum[LETTERS_AMOUNT][COLUMNS])
+void count_chars_in_file(ifstream& ifstr, 
+    int chars_sum[LETTERS_AMOUNT][COLUMNS])
 {
     char input_char = ifstr.get();
 
     while (!ifstr.eof())
     {
 	    if(isalpha(input_char))
-            //the array index runs from 0 to 25. index 0 for 'a', 1 for 'b' etc.
-            //to find the correct index for each letter, need to subtract the integer value of 'a', (the first index),
+            //the array index runs from 0 to 25. index 0 for 'a', 1 for 'b' etc
+            //to find the correct index for each letter, need to subtract
+            //the integer value of 'a', (the first index),
             //from the input_char variable
             chars_sum[input_char - 'a'][LETTER_AMOUNT_COLUMN]++;
 
@@ -201,13 +208,15 @@ void order_array_by_char_instances(int arr[LETTERS_AMOUNT][COLUMNS])
  * by counting the number of instances of each alphabetic chars,
  * initializing the chars sum array, and put the results into the array
  * when the data is in the array, the array is sorted, using bubble sort,
- * to descending order array by the num of instances of each char (second column)
+ * to descending order array by the num of instances of each char
+ * (second column)
  *
  * parameters:
  * ifstr: reference to the file for the analyzing action
  * char_sum_array: array that saves amount of instances of chars in the file
  */
-void analyze_file(ifstream& ifstr, int chars_sum_array[LETTERS_AMOUNT][COLUMNS])
+void analyze_file(ifstream& ifstr, 
+    int chars_sum_array[LETTERS_AMOUNT][COLUMNS])
 {
     initial_chars_sum_array(chars_sum_array);
 
@@ -222,7 +231,8 @@ void analyze_file(ifstream& ifstr, int chars_sum_array[LETTERS_AMOUNT][COLUMNS])
  *
  * during the analyzing action, the chars array are set in order we can use
  * to decrypt chars by looking for the index of the encrypted char in the
- * encrypted_file_chars_array and take the equivalent char with the same array index
+ * encrypted_file_chars_array and take the equivalent char
+ * with the same array index
  * in the input_file_chars_array
  *
  * parameters:
@@ -238,15 +248,18 @@ void decrypt_file(ifstream& encrypted_file, ifstream& input_file)
     analyze_file(input_file, input_file_chars_array);
 
     char encrypted_char = encrypted_file.get();
-    //decrypted_char used to set the char will send to output, decrypted or original
+    //decrypted_char used to set the char will send to output,
+	//decrypted or original
 	char decrypted_char = encrypted_char; 
 	
     while(!encrypted_file.eof())
 	{
 		for (int i = 0; i < LETTERS_AMOUNT; i++)
-            if (encrypted_file_chars_array[i][LETTER_INDEX_COLUMN] == encrypted_char)
+            if (encrypted_file_chars_array[i][LETTER_INDEX_COLUMN] 
+                == encrypted_char)
             {
-                decrypted_char = input_file_chars_array[i][LETTER_INDEX_COLUMN];
+                decrypted_char = 
+                    input_file_chars_array[i][LETTER_INDEX_COLUMN];
                 break;
             }
 

@@ -38,10 +38,13 @@ const int FILENAME_LENGTH = 100;
 const int MAX_LINE_SIZE = 200;
 
 //---------------------functions section------------------
-bool open_files(char input_filename1[], char input_filename2[], char output_filename[],
-    ifstream& input_file1, ifstream& input_file2, ofstream& output_file);
-void close_files(ifstream& input_file1, ifstream& input_file2, ofstream& output_file);
-void merge_files(ifstream& input_file1, ifstream& input_file2, ofstream& output_file);
+bool open_files(char input_filename1[], char input_filename2[],
+    char output_filename[], ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file);
+void close_files(ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file);
+void merge_files(ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file);
 int compare_students(char student1[], char student2[]);
 void copy_to_output(ifstream& input_file, ofstream& output_file);
 
@@ -55,13 +58,15 @@ int main()
     ifstream input_file2;
     ofstream output_file;
 	
-    cout << "Enter input filename 1, input filename 2 and output filename" << endl;
+    cout << "Enter input filename 1, input filename 2 and output filename"
+		 << endl;
 
     cin >> setw(FILENAME_LENGTH) >> input_filename1
         >> setw(FILENAME_LENGTH) >> input_filename2
         >> setw(FILENAME_LENGTH) >> output_filename;
 
-    if (!open_files(input_filename1, input_filename2, output_filename, input_file1, input_file2, output_file))
+    if (!open_files(input_filename1, input_filename2, output_filename,
+        input_file1, input_file2, output_file))
     {
         cerr << "Failed to open files" << endl;
         return EXIT_FAILURE;
@@ -88,7 +93,9 @@ int main()
  * If all files has open success - true
  * Otherwise - false
  */
-bool open_files(char input_filename1[], char input_filename2[], char output_filename[], ifstream& input_file1, ifstream& input_file2, ofstream& output_file)
+bool open_files(char input_filename1[], char input_filename2[],
+    char output_filename[], ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file)
 {
     input_file1.open(input_filename1);
 	if(!input_file1.is_open())
@@ -122,7 +129,8 @@ bool open_files(char input_filename1[], char input_filename2[], char output_file
  * input_file2: reference for input_file2
  * output_file: reference for output_file
  */
-void close_files(ifstream& input_file1, ifstream& input_file2, ofstream& output_file)
+void close_files(ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file)
 {
     input_file1.close();
     input_file2.close();
@@ -138,7 +146,8 @@ void close_files(ifstream& input_file1, ifstream& input_file2, ofstream& output_
  * first and then from the second file.
  * when one file is in the end, the leftover lines will copy to the output
  */
-void merge_files(ifstream& input_file1, ifstream& input_file2, ofstream& output_file)
+void merge_files(ifstream& input_file1, ifstream& input_file2,
+    ofstream& output_file)
 {
     char student_entry1[MAX_LINE_SIZE];
     char student_entry2[MAX_LINE_SIZE];
@@ -206,11 +215,13 @@ void copy_to_output(ifstream& input_file, ofstream& output_file)
 
 /*
  * This function use to compare two students entries by student name
- * the function comparing each character, by comparing the numeric value of each char
+ * the function comparing each character,
+ * by comparing the numeric value of each char
  *
  * if the fist student is lexicographic bigger the function return -1
  * if the second student is lexicographic bigger the function return -2
- * if the students are equals the function return the index where the student name ends
+ * if the students are equals the function return the index
+ * where the student name ends
  *
  * parameters:
  * student1: student1 entry
