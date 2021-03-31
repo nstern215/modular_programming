@@ -43,8 +43,7 @@ const int LETTER_AMOUNT_COLUMN = 1;
 const char BASE_LETTER_ID = 'a';
 
 //------------------functions section------------------
-bool open_files(char input_filename[], char encrypted_filename[], 
-    ifstream& input_file, ifstream& encrypted_file);
+bool open_input_file(char filename[], ifstream& ifstr);
 void close_files(ifstream& input_file, ifstream& encrypted_file);
 void decrypt_file(ifstream& encrypted_file, ifstream& input_file);
 void count_chars_in_file(ifstream& ifstr, 
@@ -64,12 +63,19 @@ int main()
 
     cout << "Enter encrypted filename and input filename" << endl;
 
-    cin >> setw(FILENAME_LENGtH) >> encrypted_filename
-        >> setw(FILENAME_LENGtH) >> input_filename;
-
-	if(!open_files(input_filename, encrypted_filename, input_file, 
-        encrypted_file))
-        return EXIT_FAILURE;
+    cin >> setw(FILENAME_LENGtH) >> encrypted_filename;
+    if (!open_input_file(encrypted_filename, encrypted_file))
+    {
+        cerr << "input file to decrypt was not found" << endl;
+        exit(EXIT_FAILURE);
+    }
+	
+    cin >> setw(FILENAME_LENGtH) >> input_filename;
+    if(!open_input_file(input_filename, input_file))
+    {
+        cerr << "plain file was not found" << endl;
+        exit(EXIT_FAILURE);
+    }
 
     decrypt_file(encrypted_file, input_file);
 
@@ -81,36 +87,20 @@ int main()
 //------------------functions implementation------------------
 
 /*
- * this function use to open files
+ * this function use to open an input file
  *
  * parameters:
- * encrypted_filename: path to encrypted file
- * input_filename: path to input file
- * input_file: reference for input file
- * encrypted_file: reference for encrypted file
+ * filename: path to input file
+ * ifstr: reference for input file
  *
  * output:
- * If all files has open success - true
- * Otherwise - false
+ * if file has open success - true
+ * otherwise - false
  */
-bool open_files(char input_filename[], char encrypted_filename[],
-    ifstream& input_file, ifstream& encrypted_file)
+bool open_input_file(char filename[], ifstream& ifstr)
 {
-    input_file.open(input_filename);
-    if(!input_file.is_open())
-    {
-        cerr << "input file to decrypt was not found" << endl;
-        return false;
-    }
-
-    encrypted_file.open(encrypted_filename);
-	if(!encrypted_file.is_open())
-	{
-        cerr << "plain file was not found" << endl;
-        return false;
-	}
-	
-    return true;
+    ifstr.open(filename);
+    return ifstr.is_open();
 }
 
 /*
