@@ -18,7 +18,7 @@
  * encrypted content in the output file
  */
 
-//----------------include section----------------
+ //----------------include section----------------
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -36,10 +36,9 @@ using std::ofstream;
 const int FILENAME_LENGTH = 100;
 
 //----------------functions section
-bool open_files(char input_filename[], char key_filename[],
-	char output_filename[], ifstream& input_isr, ifstream& key_ist,
-	ofstream& output_ostr);
-void close_files(ifstream& input_isr, ifstream& key_ist, 
+bool open_input_file(char filename[], ifstream& ifstr);
+bool open_output_file(char filename[], ofstream& ostr);
+void close_files(ifstream& input_isr, ifstream& key_ist,
 	ofstream& output_ostr);
 void encrypt_file(ifstream& input_file, ifstream& encryption_key_file,
 	ofstream& output_file);
@@ -50,75 +49,75 @@ int main()
 	//----------------variables section----------------
 	ifstream input_file;
 	ifstream encryption_key_file;
-	ofstream encryptedFile;
+	ofstream encrypted_file;
 
 	char input_filename[FILENAME_LENGTH];
 	char encryptionkey_filename[FILENAME_LENGTH];
 	char encrypted_file_filename[FILENAME_LENGTH];
 
 	cout << "Enter encryption key filename, input filename, output filename"
-		 << endl;
+		<< endl;
+
+	cin >> setw(FILENAME_LENGTH) >> encryptionkey_filename;
+	if(!open_input_file(encryptionkey_filename, encryption_key_file))
+	{
+		cerr << "Key file not found" << endl;
+		exit(EXIT_FAILURE);
+	}
 	
-	cin >> setw(FILENAME_LENGTH) >> encryptionkey_filename
-		>> setw(FILENAME_LENGTH) >> input_filename
-		>> setw(FILENAME_LENGTH) >> encrypted_file_filename;
-
-	if (!open_files(input_filename, encryptionkey_filename, 
-		encrypted_file_filename, input_file, 
-		encryption_key_file, encryptedFile))
-		return EXIT_FAILURE;
-
-	encrypt_file(input_file, encryption_key_file, encryptedFile);
-
-	close_files(input_file, encryption_key_file, 
-		encryptedFile);
+	cin >> setw(FILENAME_LENGTH) >> input_filename;
+	if(!open_input_file(input_filename, input_file))
+	{
+		cerr << "input file to encrypt was not found" << endl;
+		exit(EXIT_FAILURE);
+	}
 	
+	cin	>> setw(FILENAME_LENGTH) >> encrypted_file_filename;
+	if (!open_output_file(encrypted_file_filename, encrypted_file))
+		exit(EXIT_FAILURE);
+
+	encrypt_file(input_file, encryption_key_file, encrypted_file);
+
+	close_files(input_file, encryption_key_file,
+		encrypted_file);
+
 	return EXIT_SUCCESS;
 }
 
 //----------------functions implementation-----------------
 
 /*
- * this function use to open files
- * 
+ * this function use to open an input file
+ *
  * parameters:
- * input_filename: path to input file
- * key_filename: path encryption key file
- * output_filename: path to output file
- * inputIstr: reference for input file
- * key_istr: reference for encryption key file
- * output_ostr: reference for output file
+ * filename: path to input file
+ * ifstr: reference for input file
  *
  * output:
- * If all files has open success - true
- * Otherwise - false
+ * if file has open success - true
+ * otherwise - false
  */
-bool open_files(char input_filename[], char key_filename[], 
-	char output_filename[], ifstream& input_isr, ifstream& key_ist,
-	ofstream& output_ostr)
+bool open_input_file(char filename[], ifstream& ifstr)
 {
-	input_isr.open(input_filename);
-	if(!input_isr.is_open())
-	{
-		cerr << "Cannot open input file " << input_filename << endl;
-		return false;
-	}
+	ifstr.open(filename);
+	return ifstr.is_open();
+}
 
-	key_ist.open(key_filename);
-	if(!key_ist.is_open())
-	{
-		cerr << "Cannot open encryption key file " << key_filename << endl;
-		return false;
-	}
-
-	output_ostr.open(output_filename);
-	if (!output_ostr.is_open())
-	{
-		cerr << "Cannot open output file " << output_filename << endl;
-		return false;
-	}
-
-	return true;
+/*
+ * this function use to open an input file
+ *
+ * parameters:
+ * filename: path to output file
+ * ostr: reference for output file
+ *
+ * output:
+ * if file has open success - true
+ * otherwise - false
+ */
+bool open_output_file(char filename[], ofstream& ostr)
+{
+	ostr.open(filename);
+	return ostr.is_open();
 }
 
 /*
@@ -150,13 +149,13 @@ void close_files(ifstream& input_isr, ifstream& key_ist, ofstream& output_ostr)
  *
  * if it is, the function sending the char for encryption
  */
-void encrypt_file(ifstream& input_file, ifstream& encryption_key_file, 
+void encrypt_file(ifstream& input_file, ifstream& encryption_key_file,
 	ofstream& output_file)
 {
 	char output_char;
 	char input_char = input_file.get();
-	
-	while(!input_file.eof())
+
+	while (!input_file.eof())
 	{
 		//if the char is not relevant for the encryption, sent for encryption,
 		//otherwise, use the original char
@@ -166,7 +165,8 @@ void encrypt_file(ifstream& input_file, ifstream& encryption_key_file,
 			output_char = input_char;
 
 		output_file << output_char;
-		
+		cout << output_char;
+
 		input_char = input_file.get();
 	}
 }
