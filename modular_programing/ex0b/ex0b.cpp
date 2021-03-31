@@ -25,7 +25,6 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-#include <iostream>
 
 //------------------using section------------------
 using std::cout;
