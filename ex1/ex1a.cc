@@ -26,9 +26,9 @@ using std::setw;
 using std::nothrow;
 
 //------------------functions section------------------
-int read_data(int& **arr);
+void read_data(int **arr, int num_of_rows);
 int** allocate_matrix(int size);
-void print_sum(const int **arr, int num_of_rows);
+void print_sum(int **arr, int num_of_rows);
 void free_memory(int **arr, int num_of_rows);
 
 //-----------------------------------------------------------------------------
@@ -38,7 +38,11 @@ int main()
     int **arr;
     int num_of_rows;
 
-    int num_of_rows = read_data(arr);
+    cin >> num_of_rows;
+
+    arr = allocate_matrix(num_of_rows);
+
+    read_data(arr, num_of_rows);
 
     print_sum(arr, num_of_rows);
 
@@ -54,18 +58,10 @@ int main()
  * 
  * parameters: 
  * **arr: pointer for int matrix
- * output:
- * num of rows in the matrix
 */
-int read_data(int& **arr)
+void read_data(int **arr, int num_of_rows)
 {
-    int num_of_rows;
     int row_len;
-
-    cin >> num_of_rows;
-
-    //allocate memory for the matrix
-    arr = allocate_matrix(num_of_rows);
 
     //read data for the matrix
     for (int i = 0; i < num_of_rows; i++)
@@ -77,11 +73,9 @@ int read_data(int& **arr)
         //first cell in the row store the length of the row
         arr[i][0] = row_len;
 
-        for (int j = 0; j < row_len; j++)
-            cin >> arr[i][j + 1];
+        for (int j = 1; j < row_len + 1; j++)
+            cin >> arr[i][j];
     }
-
-    return num_of_rows;
 }
 
 //-----------------------------------------------------------------------------
@@ -94,15 +88,13 @@ int read_data(int& **arr)
  * **arr: pointer for the matrix
  * num_of_rows: how many rows in the matrix
 */
-void print_sum(const int **arr, int num_of_rows)
+void print_sum(int **arr, int num_of_rows)
 {
     int sum = 0;
 
    for (int i = 0; i < num_of_rows; i++)
        for (int j = 0; j < arr[i][0]; j++)
-       {
            sum += arr[i][j+1];
-       }
 
    cout << sum;
 }
