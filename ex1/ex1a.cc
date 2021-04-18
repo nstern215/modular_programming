@@ -20,6 +20,7 @@
 
 //------------------using section------------------
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::cin;
 using std::setw;
@@ -28,7 +29,7 @@ using std::nothrow;
 //------------------functions section------------------
 void read_data(int **arr, int num_of_rows);
 int** allocate_matrix(int size);
-void print_sum(int **arr, int num_of_rows);
+void print_sum(const int **arr, int num_of_rows);
 void free_memory(int **arr, int num_of_rows);
 
 //-----------------------------------------------------------------------------
@@ -44,7 +45,7 @@ int main()
 
     read_data(arr, num_of_rows);
 
-    print_sum(arr, num_of_rows);
+    print_sum((const int**)arr, num_of_rows);
 
     free_memory(arr, num_of_rows);
 }
@@ -70,6 +71,8 @@ void read_data(int **arr, int num_of_rows)
 
         //allocate memory for the row
         arr[i] = new (nothrow) int[row_len + 1];
+        if (arr[i] == nullptr)
+            cerr << "Failed to allocate memory" << endl;
         //first cell in the row store the length of the row
         arr[i][0] = row_len;
 
@@ -88,7 +91,7 @@ void read_data(int **arr, int num_of_rows)
  * **arr: pointer for the matrix
  * num_of_rows: how many rows in the matrix
 */
-void print_sum(int **arr, int num_of_rows)
+void print_sum(const int **arr, int num_of_rows)
 {
     int sum = 0;
 
@@ -112,6 +115,9 @@ int** allocate_matrix(int size)
 {
     int **matrix;
     matrix = new (nothrow) int*[size];
+
+    if (matrix == nullptr)
+        cerr << "Failed to allocate memory" << endl;
 
     return matrix;
 }
