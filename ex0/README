@@ -1,0 +1,62 @@
+File: ex0a.cc
+File encryption
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program reading from the user names of 3 files:
+input_filename, encryptionkey_filename, encrypted_file_filename
+
+the program reading characters from the input file, and using the data
+from the encryption key file, it encrypts the file and send the encrypted
+data to the output file
+
+Compile: g++ -Wall ex0a.cc -o ex0a
+Run: ex0a
+Input: names of 3 file: encryptionkey_filename, input_filename,
+encrypted_file_filename
+
+Output:
+encrypted content in the output file
+
+File: ex0b.cc
+File decryption
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program reading from the user names of 2 files:
+encrypted_filename, input_file
+
+the program reading characters from the input file, and using the data
+from the encryption key file, it encrypts the file and send the encrypted
+data to the output file
+
+the program summering the amount of instances of the chars in the files,
+sorting the chars by the num of instances, and base on this information
+setting decryption key and printing the decrypted file
+
+Compile: g++ -Wall ex0b.cc -o ex0b
+Run: ex0b
+Input:
+names of 2 file: encrypted_filename, input_file
+Output:
+content of decrypted file
+
+File: ex0c.cc Files merging
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program reading from the user names of 3 files:
+input_filename1, input_filename2, output_filename
+
+the program reading the entries from the input files
+comparing the students names from each entry and printing the
+merged result to the output file
+
+each entry contains student name and grades
+
+Compile: g++ -Wall ex0c.cc -o ex0c
+Run: ex0c
+Input:
+names of 3 file: input_filename1, input_filename2, output_filename
+Output:
+content of merged files
