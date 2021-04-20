@@ -88,7 +88,10 @@ char **allocate_matrix(int size)
     char **arr = new (nothrow) char*[size];
 
     if(arr == nullptr)
+    {
         cerr << "Failed to allocate memory" << endl;
+        exit(EXIT_FAILURE);
+    }
 
     return arr;
 }
@@ -110,7 +113,10 @@ void read_sentences(Sentences& sentences)
         //allocate memory for the sentence in the matrix
         char *str = new (nothrow) char[SENTENCE_MAX_LEN];
         if (str == nullptr)
+        {
             cerr << "Failed to allocate memory" << endl;
+            exit(EXIT_FAILURE);
+        }
 
         //copy the string to the allocated memory
         strcpy(str, sentence);
@@ -142,7 +148,10 @@ Sentences *sentences_to_strings(const Sentences& sentences)
     //allocating new matrix for the strings
     strings->_data = new (nothrow) char*[num_of_strings];
     if (strings->_data == nullptr)
+    {
         cerr << "Failed to allocate memory" << endl;
+        exit(EXIT_FAILURE);
+    }
 
     int str_index = 0; //use as index in the new matrix
     int len = 0; // use to calculate the string length in the sentence
@@ -160,7 +169,10 @@ Sentences *sentences_to_strings(const Sentences& sentences)
                 //allocating memory for the string
                 strings->_data[str_index] = new (nothrow) char[len + 1];
                 if (strings->_data[str_index] == nullptr)
-                    cerr << "Failed to allocate memory" << endl;         
+                {
+                    cerr << "Failed to allocate memory" << endl;
+                    exit(EXIT_FAILURE);
+                }
 
                 //copy the chars that belong to this specific string
                 //into the new strings matrix
@@ -232,11 +244,13 @@ int count_strings_in_sentence(const char *sentence)
 */
 void free_memory(Sentences& sentences, Sentences *strings)
 {
+    //release memory of sentences
     for (int i = 0; i < sentences._num_of_sentences; i++)
         delete[] sentences._data[i];
 
     delete[] sentences._data;
 
+    //release memory of strings
     for (int i = 0; i < strings->_num_of_sentences; i++)
         delete[] strings->_data[i];
 

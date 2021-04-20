@@ -1,0 +1,62 @@
+File: ex1a.cc
+Dynamic array allocation
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program read from the user num of rows in the matrix
+and the data for each row than print the sum
+the matrix size is dynamic and depend on the input from the user
+
+Compile: g++ -Wall ex1a.cc -o ex1a
+Run: ex1a
+Input:
+num of rows in the matrix and content of each row
+
+Output:
+sum of the matrix
+
+File: ex1b.cc
+Sentences and strings
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program read sentences from the user and store in a mtrix
+inside a struct
+then, the program break each sentence into strings
+each string is only one word (split the sentence by the space)
+
+Compile: g++ -Wall ex1b.cc -o ex1b
+Run: ex1b
+Input:
+num of rows in the matrix and content of each row
+
+Output:
+sum of the matrix
+
+File: ex1c.cc
+Numbers matrix
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+this program read rows of numbers from the user and save them in the struct
+in int matrix
+
+for each row, the program check:
+if the row is already exist or there is an exist row that contains the new
+row, the row will be ignored
+if the new row contains an existing row (the beginning of the rows are
+equal), the new row will replace the existing one
+otherwise, the new row will be added to the matrix
+
+the program can print the matrix
+
+Compile: g++ -Wall ex1c.cc -o ex1c
+Run: ex1c
+Input:
+0: exit
+1: add new row - first input for row length, after insert the content of
+the row
+2: print the matrix
+
+Output:
+the matrix

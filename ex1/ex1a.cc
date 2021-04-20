@@ -72,7 +72,11 @@ void read_data(int **arr, int num_of_rows)
         //allocate memory for the row
         arr[i] = new (nothrow) int[row_len + 1];
         if (arr[i] == nullptr)
+        {
             cerr << "Failed to allocate memory" << endl;
+            exit(EXIT_FAILURE);
+        }
+            
         //first cell in the row store the length of the row
         arr[i][0] = row_len;
 
@@ -117,7 +121,10 @@ int** allocate_matrix(int size)
     matrix = new (nothrow) int*[size];
 
     if (matrix == nullptr)
+    {
         cerr << "Failed to allocate memory" << endl;
+        exit(EXIT_FAILURE);
+    }
 
     return matrix;
 }
