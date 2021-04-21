@@ -48,6 +48,8 @@ int main()
     print_sum((const int**)arr, num_of_rows);
 
     free_memory(arr, num_of_rows);
+    
+    return EXIT_SUCCESS;
 }
 
 //-------------------functions section--------------------------
