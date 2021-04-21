@@ -69,6 +69,8 @@ int main()
     print_sentences(strings);
 
     free_memory(sentences, strings);
+   
+   return EXIT_SUCCESS;
 }
 
 //------------------functions section------------------------------------------
