@@ -112,8 +112,11 @@ void read_sentences(Sentences& sentences)
     {
         cin.getline(sentence, SENTENCE_MAX_LEN);
     
+        size_t str_len = strlen(sentence);
+
         //allocate memory for the sentence in the matrix
-        char *str = new (nothrow) char[SENTENCE_MAX_LEN];
+        char *str = new (nothrow) char[str_len + 1];
+        str[str_len] = '\0';
         if (str == nullptr)
         {
             cerr << "Failed to allocate memory" << endl;
@@ -121,7 +124,8 @@ void read_sentences(Sentences& sentences)
         }
 
         //copy the string to the allocated memory
-        strcpy(str, sentence);
+        strncpy(str, sentence, (int)str_len);
+        // strcpy(str, sentence);
     
         sentences._data[i] = str;
     }
@@ -148,7 +152,7 @@ Sentences *sentences_to_strings(const Sentences& sentences)
     int num_of_strings = count_strings(sentences);
     strings->_num_of_sentences = num_of_strings;
     //allocating new matrix for the strings
-    strings->_data = new (nothrow) char*[num_of_strings];
+    strings->_data = allocate_matrix(num_of_strings);
     if (strings->_data == nullptr)
     {
         cerr << "Failed to allocate memory" << endl;
@@ -160,34 +164,35 @@ Sentences *sentences_to_strings(const Sentences& sentences)
 
     //in each iteration, break one sentence into strings
     for (int i = 0; i < sentences._num_of_sentences; i++)
-        for (int j = 0; sentences._data[i][j] != '\0'; j++)
-        {
-            if (!isspace(sentences._data[i][j]))
-                len++;
-            //if the next char is space or null => end of strin
-            if (isspace(sentences._data[i][j + 1]) || 
-                sentences._data[i][j + 1] == '\0')
+        if (sentences._data[i] != nullptr)
+            for (int j = 0; sentences._data[i][j] != '\0'; j++)
             {
-                //allocating memory for the string
-                strings->_data[str_index] = new (nothrow) char[len + 1];
-                if (strings->_data[str_index] == nullptr)
+                if (!isspace(sentences._data[i][j]))
+                    len++;
+                //if the next char is space or null => end of strin
+                if (isspace(sentences._data[i][j + 1]) ||
+                    sentences._data[i][j + 1] == '\0')
                 {
-                    cerr << "Failed to allocate memory" << endl;
-                    exit(EXIT_FAILURE);
+                    //allocating memory for the string
+                    strings->_data[str_index] = new (nothrow) char[len + 1];
+                    if (strings->_data[str_index] == nullptr)
+                    {
+                        cerr << "Failed to allocate memory" << endl;
+                        exit(EXIT_FAILURE);
+                    }
+                    strings->_data[str_index][len] = '\0';
+    
+                    //copy the chars that belong to this specific string
+                    //into the new strings matrix
+                    for (int k = 0; k < len; k++)
+                        strings->_data[str_index][k] = 
+                            sentences._data[i][j - len + 1 + k];
+    
+                    len = 0;
+                    str_index++;
+    
                 }
-
-                //copy the chars that belong to this specific string
-                //into the new strings matrix
-                for (int k = 0; k < len; k++)
-                    strings->_data[str_index][k] = 
-                        sentences._data[i][j - len + 1 + k];
-
-                len = 0;
-                str_index++;
-
             }
-
-        }
 
 
     return strings;
@@ -271,5 +276,5 @@ void free_memory(Sentences& sentences, Sentences *strings)
 void print_sentences(const Sentences* sentences)
 {
     for (int i = 0; i < sentences->_num_of_sentences; i++)
-        cout << sentences->_data[i] << endl;   
+        cout << sentences->_data[i] << endl;
 }
