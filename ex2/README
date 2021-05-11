@@ -1,0 +1,64 @@
+File: ex2a.cc
+Numbers in linked list
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program read numbers from the user and build a linked list.
+each node contains a pointer for the node after and the node before
+then, check how many numbers bigger than the number in the node before,
+and smaller than the number in the node after
+
+the program will print the result
+
+Compile: g++ -Wall ex2a.cc -o ex2a
+Run: ex2a
+Input:
+int numbers until eof
+Output:
+how many numbers bigger than the number in the node before
+and smaller than the number in the node after
+
+File: ex2b.cc
+Numbers in linked list - jumpping
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+this program read numbers from the user, the first number is an id
+and the seccond is jump number (positive or negative)
+for each input the program add a new node to the list and each node
+connected to the node before and the node after
+
+the progarm will run over the list with 'jumps':
+for each node, the id will print and the program will jump,
+by the '_jump' value, nodes backward or farward depence on the sign
+of the jump.
+
+the run will stop if the jump is 0 or 15 ids have been printed,
+the earlier.
+
+Compile: g++ -Wall ex2b.cc -o ex2b
+Run: ex2b
+Input:
+couples of number, first for id second for jump
+jump 0 will be the last input
+Output:
+ids of the nodes
+
+File: ex2c.cc
+Prime numbers
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+this program read numbers from the user, until input is equal to 0,
+for each number the program will look for the smallest prime divider.
+if the prime list doesnt conaints a node with this divider, the program will
+add a new node with this prime,
+then, the program add the number to the 'right' list of the prime
+
+Compile: g++ -Wall ex2c.cc -o ex2c
+Run: ex2c
+Input:
+int numbers until input equal 0
+Output:
+print the list
+for each line the prime and then the numbers in the 'right' list
