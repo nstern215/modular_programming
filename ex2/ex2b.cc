@@ -1,5 +1,5 @@
 /*
- * Ex #1: Numbers in linked list - jumpping
+ * Ex #2: Numbers in linked list - jumpping
  * =============================================
  * Written by: Netanel Stern, id = 206342255, login = netanelst
  *
