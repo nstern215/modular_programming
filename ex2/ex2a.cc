@@ -1,22 +1,48 @@
+/*
+ * Ex #1: Numbers in linked list
+ * =============================================
+ * Written by: Netanel Stern, id = 206342255, login = netanelst
+ *
+ * This program read numbers from the user and build a linked list.
+ * each node contains a pointer for the node after and the node before
+ * then, check how many numbers bigger than the number in the node before,
+ * and smaller than the number in the node after
+ * 
+ * the program will print the result
+ * 
+ * input:
+ * int numbers until eof
+ *
+ * output:
+ * how many numbers bigger than the number in the node before
+ * and smaller than the number in the node after
+ */
+
+//---------------------inlcude section-----------------------------------------
 #include <iostream>
 
+//---------------------using section-------------------------------------------
 using std::cin;
 using std::cerr;
 using std::cout;
 using std::endl;
 using std::nothrow;
 
+//---------------------struct section------------------------------------------
 struct Node
 {
     int _value;
     Node *_next;
 };
 
+//---------------------functions section---------------------------------------
 void read_data(Node*& head);
 Node *create_node(int data);
 void insert_node(Node*& head, Node *new_node);
 void free_memory(Node *head);
-int count_ndoes(Node *head);
+int count_nodes(Node *head);
+
+//-----------------------------------------------------------------------------
 
 int main()
 {
@@ -24,49 +50,70 @@ int main()
 
     read_data(head);
 
-    // Node *temp = head;
-    // while(temp)
-    // {
-    //     cout << temp->_value << endl;
-    //     temp = temp->_next;
-    // }
-
-    cout << count_ndoes(head) << endl;
+    cout << count_nodes(head) << endl;
 
     free_memory(head);
 
     return EXIT_SUCCESS;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to read the numbers form the user and build a linked
+ * list for the numbers
+ * 
+ * prameters:
+ * head: reference for pointer that point to the head of the list
+*/
 void read_data(Node*& head)
 {
     int input;
 
     cin >> input;
 
-    while(input != 0)
+    while(!cin.eof())
     {
         insert_node(head, create_node(input));
         cin >> input;
     }
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to create a single node for the list
+ * 
+ * parameter:
+ * data: the value of the node
+ * 
+ * output:
+ * a pointer for the new node
+*/
 Node *create_node(int data)
 {
     Node *node = new (nothrow) Node;
 
+    //check if memory allocated
     if (node == nullptr)
     {
         cerr << "Failed to allocate memory for a new node" << endl;
         exit(EXIT_FAILURE);
     }
 
+    //initialize node properties
     node->_value = data;
     node->_next = nullptr;
 
     return node;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to insert a new node to the end of the list
+ * 
+ * parameters:
+ * head: reference for a pointer that point to the head of the list
+ * new_node: pointer for the new node to add
+*/
 void insert_node(Node*& head, Node *new_node)
 {
     if (head == nullptr)
@@ -82,7 +129,19 @@ void insert_node(Node*& head, Node *new_node)
     }
 }
 
-int count_ndoes(Node *head)
+//-----------------------------------------------------------------------------
+/**
+ * this function use to count how many numbers in the list are bigger
+ * than the number in the node before and smaller than the number
+ * in the node after
+ * 
+ * paramters:
+ * head: a pointer to the head of the list
+ * 
+ * output:
+ * counter result
+*/
+int count_nodes(Node *head)
 {
     if (!head)
         return 0;
@@ -96,11 +155,14 @@ int count_ndoes(Node *head)
     {
         if (!previous)
         {
+            //the list contains only one node
             if (!next)
                 return 1;
+            //the node is the first node in the list
             if (node->_value < next->_value)
                 count++;
         }
+        //the node is the last node in the list
         else if (!next)
         {
             if (node->_value > previous->_value)
@@ -120,6 +182,10 @@ int count_ndoes(Node *head)
     return count;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to release the memory used by the program
+*/
 void free_memory(Node *head)
 {
     Node *temp = head;
