@@ -1,11 +1,40 @@
+/*
+ * Ex #1: Numbers in linked list - jumpping
+ * =============================================
+ * Written by: Netanel Stern, id = 206342255, login = netanelst
+ *
+ * this program read numbers from the user, the first number is an id
+ * and the seccond is jump number (positive or negative)
+ * for each input the program add a new node to the list and each node
+ * connected to the node before and the node after
+ * 
+ * the progarm will run over the list with 'jumps':
+ * for each node, the id will print and the program will jump,
+ * by the '_jump' value, nodes backward or farward depence on the sign
+ * of the jump.
+ * 
+ * the run will stop if the jump is 0 or 15 ids have been printed,
+ * the earlier.
+ * 
+ * input:
+ * couples of number, first for id second for jump
+ * jump 0 will be the last input
+ *
+ * output:
+ * ids of the nodes
+ */
+
+//---------------------inlcude section-----------------------------------------
 #include <iostream>
 
+//---------------------using section-------------------------------------------
 using std::nothrow;
 using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
 
+//---------------------struct section------------------------------------------
 struct Node {
    int _id;
    int _jump;
@@ -13,8 +42,10 @@ struct Node {
         *_prev ;
 };
 
+//---------------------constant variables section------------------------------
 const int N = 15;
 
+//---------------------functions section---------------------------------------
 void read_data(Node*& head);
 Node *create_node(int id, int jump);
 void add_node(Node*& head, Node *node);
@@ -22,6 +53,7 @@ void make_chain(Node*& head);
 void print_list(Node* head);
 void free_memory(Node *head);
 
+//-----------------------------------------------------------------------------
 int main()
 {
     Node* head = nullptr;
@@ -34,6 +66,13 @@ int main()
     return EXIT_SUCCESS;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to read the id and the jump value into a linked list
+ * 
+ * paramters:
+ * head: reference for a pointer that point to the head of the list
+*/
 void read_data(Node*& head)
 {
     int id;
@@ -51,6 +90,17 @@ void read_data(Node*& head)
     make_chain(head);
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this funcion is use to create a new node
+ * 
+ * paramters:
+ * id: the id of the new node
+ * jump: the jump value of the new node
+ * 
+ * output:
+ * a pointer for the new node
+*/
 Node *create_node(int id, int jump)
 {
     Node *node = new (nothrow) Node;
@@ -61,6 +111,8 @@ Node *create_node(int id, int jump)
         exit(EXIT_FAILURE);
     }
 
+
+    //initialize the node properties
     node->_id = id;
     node->_jump = jump;
     node->_next = nullptr;
@@ -69,6 +121,14 @@ Node *create_node(int id, int jump)
     return node;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to add a new node to the end of list
+ * 
+ * parameters:
+ * head: reference for a pointer that point to the head of the list
+ * node: a pointer to node to add
+*/
 void add_node(Node*& head, Node *node)
 {
     if (!head)
@@ -85,6 +145,16 @@ void add_node(Node*& head, Node *node)
     }   
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to connect the first and last nodes in the list
+ * to make a chain:
+ * first node previous will point to the last node in the chain
+ * last node next will point to the first node in the chain
+ * 
+ * paramters:
+ * head: reference for a pointer that point to the head of the list
+*/
 void make_chain(Node*& head)
 {
     Node *temp = head;
@@ -96,6 +166,20 @@ void make_chain(Node*& head)
     head->_prev = temp;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to print the list with jumps
+ * 
+ * for each node, the id will print and the program will jump,
+ * by the '_jump' value, nodes backward or farward depence on the sign
+ * of the jump.
+ * 
+ * the run will stop if the jump is 0 or 15 ids have been printed,
+ * the earlier.
+ * 
+ * paramters:
+ * head: pointer to the head of the list
+*/
 void print_list(Node* head)
 {
     cout << head->_id << " ";
@@ -124,6 +208,10 @@ void print_list(Node* head)
     cout << endl;
 }
 
+//-----------------------------------------------------------------------------
+/**
+ * this function use to release the memory that used by the program
+*/
 void free_memory(Node *head)
 {
     Node *temp = head;
