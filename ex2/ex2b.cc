@@ -211,6 +211,9 @@ void print_list(Node* head)
 //-----------------------------------------------------------------------------
 /**
  * this function use to release the memory that used by the program
+ * 
+ * paramters:
+ * head: pointer to the head of the list
 */
 void free_memory(Node *head)
 {
