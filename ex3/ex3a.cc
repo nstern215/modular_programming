@@ -54,11 +54,10 @@ void add_node(Node*& head, Node* node)
 {
     if (head == nullptr)
         head = node;
-    else if (node->_data <= head->_data) {
+    else if (node->_data <= head->_data)
         add_node(head->_left, node);
-    } else {
+    else
         add_node(head->_right, node);
-    }
 }
 
 Node* create_node(int data)
