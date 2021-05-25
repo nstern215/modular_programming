@@ -1,0 +1,53 @@
+File: ex3a.cc
+Node and sub node
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+This program read numbers from the client untill eof and build
+a search binary tree.
+Then, the program count how many nodes exists that the node
+and his left sun values are equal, then print the result
+
+Compile: g++ -Wall ex3a.cc -o ex3a
+Run: ex3a
+Input:
+numbers until eof
+Output:
+how many nodes exists that the node
+and his left sun values are equal
+
+File: ex3b.cc
+Tree of points
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+This program read numbers from the client untill eof and build
+a search binary tree.
+for each node the program read three numbers
+one for the id of the node and two for the point (x,y)
+
+the program look for the biggest sun tree that all of his nodes
+are in the same part of a kartezic axises system
+ 
+Compile: g++ -Wall ex3b.cc -o ex3b
+Run: ex3b
+Input:
+numbers until eof
+Output:
+the point value of the root of the sub tree
+
+File: ex3c.cc
+biggest tree with even numbers
+=============================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+This program read numbers from the client untill eof and build
+a search binary tree.
+
+the program will look for the biggest sub tree that the
+amount of even numbers are much bigeer than the amount of 
+odd numbers
+ 
+Compile: g++ -Wall ex3c.cc -o ex3c
+Run: ex3c
+Input:
+numbers until eof
+Output:
+the value of the root of the sub tree

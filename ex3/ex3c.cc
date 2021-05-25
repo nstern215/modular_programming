@@ -1,21 +1,20 @@
 /*
- * Ex #3: tree of points
+ * Ex #3: biggest tree with even numbers
  * =============================================
  * Written by: Netanel Stern, id = 206342255, login = netanelst
  *
  * This program read numbers from the client untill eof and build
  * a search binary tree.
- * for each node the program read three numbers
- * one for the id of the node and two for the point (x,y)
  * 
- * the program look for the biggest sun tree that all of his nodes
- * are in the same part of a kartezic axises system
+ * the program will look for the biggest sub tree that the
+ * amount of even numbers are much bigeer than the amount of 
+ * odd numbers
  *  
  * input:
  * numbers until eof
  *
  * output:
- * the point value of the root of the sub tree
+ * the value of the root of the sub tree
  */
 
 //----------------------------include section----------------------------------
@@ -27,44 +26,37 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::nothrow;
+using std::min;
 
 //----------------------------structs section----------------------------------
-struct Point
+struct Node
 {
-    int _x;
-    int _y;
+    int _data;
+    Node* _left;
+    Node* _right;
 };
 
-struct Node {
-    int _id ;
-    struct Point * _data ;
-    struct Node *_left;
-    struct Node *_right ;
-};
-
-//----------------------------functions section--------------------------------
+//----------------------------function section---------------------------------
 void build_tree(Node*& root);
-Node* create_node(Point *point, int id);
-Point* create_point(int x, int y);
+Node* create_node(int data);
 void add_node(Node*& root, Node* node);
 Node* find_sub_tree(const Node* root);
-Node* find_biggest_sub_tree(const Node* root, int& size);
-int check_quarter(const Point *point);
+Node* find_biggest_sub_tree(const Node* root, int& size, int& even, int& odd);
 void free_memory(Node* root);
 
 //-----------------------------------------------------------------------------
 int main()
 {
     Node *root = nullptr;
-
+    
     build_tree(root);
 
-    Node *sub = find_sub_tree(root);
+    Node* head = find_sub_tree(root);
 
-    if (!sub)
-        cout << "0 0" << endl;
+    if (head == nullptr)
+        cout << "NOT FOUND";
     else
-        cout << sub->_data->_x << " " << sub->_data->_y << endl;
+        cout << head->_data << endl;
 
     free_memory(root);
 
@@ -80,19 +72,15 @@ int main()
 */
 void build_tree(Node*& root)
 {
-    int id;
-    int x;
-    int y;
+    int input;
+    cin >> input;
 
-    cin >> id >> x >> y;
-    while(!cin.eof())
+    while (!cin.eof())
     {
-        Point* point = create_point(x, y);
-        Node* node = create_node(point, id);
-
+        Node *node = create_node(input);
         add_node(root, node);
 
-        cin >> id >> x >> y;
+        cin >> input;
     }
 }
 
@@ -101,15 +89,14 @@ void build_tree(Node*& root)
  * this function use to create a new node
  * 
  * parameters:
- * point: pointer for point struct instance
- * id: the id of the node
+ * data: the value of the new node
  * 
  * output:
  * pointer for the new node
 */
-Node* create_node(Point *point, int id)
+Node* create_node(int data)
 {
-    Node* node = new (nothrow) Node;
+    Node *node = new (nothrow) Node;
 
     if (node == nullptr)
     {
@@ -117,36 +104,11 @@ Node* create_node(Point *point, int id)
         exit(EXIT_FAILURE);
     }
 
-    node->_data = point;
-    node->_id = id;
+    node->_data = data;
     node->_left = nullptr;
     node->_right = nullptr;
 
     return node;
-}
-
-//-----------------------------------------------------------------------------
-/**
- * this function use to create a new point
- * 
- * parameters:
- * x: x axis value
- * y: y axis value
-*/
-Point* create_point(int x, int y)
-{
-    Point* point = new (nothrow) Point;
-
-    if (point == nullptr)
-    {
-        cerr << "Failed to allocate memory" << endl;
-        exit(EXIT_FAILURE);
-    }
-
-    point->_x = x;
-    point->_y = y;
-
-    return point;
 }
 
 //-----------------------------------------------------------------------------
@@ -164,7 +126,7 @@ void add_node(Node*& root, Node* node)
 {
     if (!root)
         root = node;
-    else if (node->_id <= root->_id)
+    else if (node->_data <= root->_data)
         add_node(root->_left, node);
     else
         add_node(root->_right, node);
@@ -172,8 +134,8 @@ void add_node(Node*& root, Node* node)
 
 //-----------------------------------------------------------------------------
 /**
- * this function use to find biggest sub tree that all points
- * are in the same part of kartezic axises system
+ * this function use to find biggest sub tree that the amount of even numbers
+ * are much bigger then the amount of odd numbers
  * 
  * paramters:
  * root: pointer to the head of the tree
@@ -183,85 +145,96 @@ void add_node(Node*& root, Node* node)
 */
 Node* find_sub_tree(const Node* root)
 {
-    int size = 0;
-    return find_biggest_sub_tree(root, size);
+    int size, even, odd;
+    size = even = odd = 0;
+
+    return find_biggest_sub_tree(root, size, even, odd);
 }
 
 //-----------------------------------------------------------------------------
 /**
- * this recursive function use to find biggest sub tree that all points
- * are in the same part of kartezic axises system
+ * this recursive function use to find biggest sub tree 
+ * that the amount of even numbers
+ * are much bigger then the amount of odd numbers
  * 
  * paramters:
  * root: pointer to the head of the tree
  * size: reference to the size of the tree
+ * even: reference to the amount of even numbers in the tree
+ * odd: reference to the amount of odd numbers in tht tree
  * 
  * output:
  * pointer to the head of the biggest tree
 */
-Node* find_biggest_sub_tree(const Node* root, int& size)
+Node* find_biggest_sub_tree(const Node* root, int& size, int& even, int& odd)
 {
+    //initialize value
+    size = even = odd = 0;
+
     if (root == nullptr)
+        return nullptr;
+
+    Node *big_l, *big_r;
+    int size_l, even_l, odd_l;
+    int size_r, even_r, odd_r;
+
+    //check for the biggest sub tree in the left and right subs
+    big_l = find_biggest_sub_tree(root->_left, size_l, even_l, odd_l);
+    big_r = find_biggest_sub_tree(root->_right, size_r, even_r, odd_r);
+
+    //use to check if the left and right suns can be join to one tree
+    //(with the roor), and to do more checks to determine which
+    //sub tree is relevanr
+    int odd_even_diff = (even_l + even_r) - (odd_l + odd_r);
+    
+    //if there are no sub tree with even numbers and the root is odd
+    if ((even_l + even_r) == 0 && root->_data % 2 != 0)
     {
-        size = 0;
+        size = size_l + size_r + 1;
+        even = 0;
+        odd = odd_l + odd_r + 1;
         return nullptr;
     }
 
-    Node *big_l, *big_r;
-    int size_l, size_r;
-    int root_q, left_q, right_q;
-
-    //check the part in the axises system that each point belongs
-    root_q = check_quarter(root->_data);
-    left_q = root->_left ? check_quarter(root->_left->_data) : root_q;
-    right_q = root->_right ? check_quarter(root->_right->_data) : root_q;
-
-    //check for sub tree in the right and left sun
-    big_l = find_biggest_sub_tree(root->_left, size_l);
-    big_r = find_biggest_sub_tree(root->_right, size_r);
-
-    //if left and right suns and the root belong to same part in the grid
-    if (root_q == left_q && root_q == right_q &&
-         root->_left == big_l && root->_right == big_r)
+    //in case that both of suns are a potential sub tree, or only one of them,
+    //but with even root they can join to a bigger sub tree.
+    //except in case that the size of one of the suns is 0, then
+    //the bigger sun is the relevant sub tree
+    if (odd_even_diff > 1 || (odd_even_diff == 0 && root->_data % 2 == 0) ||
+        (odd_even_diff == 1 && root->_data % 2 == 0 
+            && min(size_l, size_r) != 0))
     {
         size = size_l + size_r + 1;
+        even = even_l + even_r;
+        odd = odd_l + odd_r;
+        if (root->_data % 2 == 0)
+            even++;
+        else
+            odd++;
         return (Node*)root;
     }
-    else if (size_l >= size_r)
+    
+    //otherwhise-in total of both suns there are more odds than evens,
+    //then look for the relevant sub tree
+    if (even_l > odd_l)
     {
-        size = size_l;
+        if (big_l)
+        {
+            size = size_l;
+            even = even_l;
+            odd = odd_l;
+        }
         return big_l;
     }
     else
     {
-        size = size_r;
+        if (big_r)
+        {
+            size = size_r;
+            even = even_r;
+            odd = odd_r;
+        }
         return big_r;
-    }
-}
-
-//-----------------------------------------------------------------------------
-/**
- * this function use to check which part of the grid the point belong
- * 
- * paramters:
- * point: pointer for a point
- * 
- * output:
- * the part in the grid
-*/
-int check_quarter(const Point *point)
-{
-    if (point->_x < 0)
-    {
-        if (point->_y < 0)
-            return 1;
-        else
-            return 2;
-    } else {
-        if (point->_y >= 0)
-            return 3;
-        else
-            return 4;
     }
 }
 
@@ -280,6 +253,5 @@ void free_memory(Node* root)
 
     free_memory(root->_left);
     free_memory(root->_right);
-    delete root->_data;
     delete root;
 }
