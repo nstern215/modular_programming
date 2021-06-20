@@ -38,11 +38,30 @@ int main()
     build_list(head);
 
     find_node(head, move_forward, is_positive);
-    find_node(head->_prev, move_backward, is_positive);
+    cout << " ";
+    
+    if (head)
+        find_node(head->_prev, move_backward, is_positive);
+    else
+        cout << "0";
+    cout << " ";
+    
     find_node(head, move_forward, is_prime);
-    find_node(head->_prev, move_backward, is_prime);
+    cout << " ";
+    
+    if (head)
+        find_node(head->_prev, move_backward, is_prime);
+    else
+        cout << "0";
+    cout << " ";
+    
     find_node(head, move_forward, is_palindrom);
-    find_node(head->_prev, move_backward, is_palindrom);
+    cout << " ";
+
+    if (head)
+        find_node(head->_prev, move_backward, is_palindrom);
+    else
+        cout << "0";
 
     cout << endl;
 
@@ -87,8 +106,11 @@ void build_list(Node*& head)
         cin >> input;
     }
 
-    last->_next = head;
-    head->_prev = last;
+    if (last)
+    {
+        last->_next = head;
+        head->_prev = last;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -123,14 +145,17 @@ void find_node(const Node* head, get_next_node next, check_node check)
 {
     //if the head node is null the is no relevant result
     if (head == nullptr)
-        cout << 0 << " ";
+    {
+        cout << 0;
+        return;
+    }
 
     //save the current checked node
     Node* current = (Node*)head;
 
     if (check(current->_data))
     {
-        cout << current->_data << " ";
+        cout << current->_data;
         return;
     }
     
@@ -142,14 +167,14 @@ void find_node(const Node* head, get_next_node next, check_node check)
     {
         if (check(current->_data))
         {
-            cout << current->_data << " ";
+            cout << current->_data;
             return;
         }
 
         current = next(current);
     }
 
-    cout << 0 << " ";
+    cout << 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -231,7 +256,7 @@ bool is_palindrom(int num)
     int last_digits = num % 10;
     
     return first_digits == last_digits &&
-            is_palindrom(num - first_digits*pow(10, num_of_digits));
+            is_palindrom((int)(num - first_digits*pow(10, num_of_digits))/10);
 }
 
 //-----------------------------------------------------------------------------
