@@ -1,0 +1,61 @@
+File: ex4a.cc
+chain link list
+=================================================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+This program read numbers from the client untill eof and build
+a link list.
+
+each node in the list point to the next node in the list
+and point to the previous node in the list
+
+(the first node in the list point to the last node in the list
+and the last node in the list point to the first node in the list)
+
+the program, using generic functions, scan the list and print:
+the first value from the beginning that bigger than 0
+the first value from the end that bigger than 0
+the first value from the beginning that is prime
+the first value from the end that is prime
+the first value from the beggining that is palindrom
+the first value from the end that is palindrom
+
+Compilte: g++ -Wall ex4a.cc -o ex4a
+Run: ./ex4a
+Input:
+numbers until eof
+Output:
+output as described
+
+File: ex4b.cc
+statistic data
+=================================================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+
+this program, using generic functions, reading static data about students
+and courses.
+Then, using generic functions, calculating averages
+and printing the results
+
+Compilte: g++ -Wall ex4b.cc -o ex4b
+Run: ./ex4b
+Input:
+reading static data about students and courses
+Output:
+averages
+
+File: ex4c.cc
+date and time
+=================================================================
+Written by: Netanel Stern, id = 206342255, login = netanelst
+file: ex4c.cpp
+
+The goal of this program is to create (initialize) dynamic array, sort it, print it 
+and add new elements to it.
+
+The array can be of any type. Specific in this exercise, Date or Time.
+
+Compile: g++ -Wall ex4c.cc ex4c_given.cc -o ex4c
+Run: ./ex4c
+Input: By the given menue, insert date or time data
+Output: By the menue print the colleceted data
